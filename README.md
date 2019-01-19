@@ -5,7 +5,7 @@ douban book API
 
 ## install
 
-beautifulsoup4
+beautifulsoup4  
 easyHTTP (https://github.com/hxgz/easyHTTP)
 
 python setup.py install
@@ -33,13 +33,13 @@ await DoubanBook().get_book(11534920)
 **hot_books**
 受关注图书 （非虚构，虚构）
 
-`book_type` nonfiction 非虚构(默认)，fiction虚构
+`book_type` nonfiction 非虚构(默认)，fiction虚构  
 `start`, `count`
 
 **weekly_hot_books**
 每周受关注图书 （非虚构，虚构）
 
-`book_type` nonfiction 非虚构(默认)，fiction虚构
+`book_type` nonfiction 非虚构(默认)，fiction虚构  
 `start`, `count`
 
 **top250**
