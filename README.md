@@ -1,7 +1,5 @@
 # douban-book
-douban book API
-
-豆瓣book相关api
+豆瓣读书相关api
 
 ## install
 
@@ -20,29 +18,34 @@ await DoubanBook().get_book(11534920)
 ## api
 
 **get_book**
+
 获取豆瓣书籍信息
 
 `book_id` 豆瓣书籍id
 
 **search_book**
+
 搜书  
 `search_text ` 书籍，作者  
 `start` 0 下标  
 `count` 每页数  
 
 **hot_books**
+
 受关注图书 （非虚构，虚构）
 
 `book_type` nonfiction 非虚构(默认)，fiction虚构  
 `start`, `count`
 
 **weekly_hot_books**
-每周受关注图书 （非虚构，虚构）
+
+每周热门图书 （非虚构，虚构）
 
 `book_type` nonfiction 非虚构(默认)，fiction虚构  
 `start`, `count`
 
 **top250**
+
 豆瓣图书 top250
 
 `start`  
