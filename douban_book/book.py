@@ -112,7 +112,7 @@ class DoubanMobileBase(API):
                 'author_list': item['author'],
                 'press_list': item['press'],
                 'pubdate': item['year'][0],
-                'suggest': item['recommend_comment']
+                'suggest': item.get('recommend_comment', '')
             }for item in data['subject_collection_items']]
         }
 
@@ -193,7 +193,7 @@ asyncio.get_event_loop().run_until_complete(
     # db.top250()
     # db.get_book(1770782)
     # db.hot_books()
-    db.hot_books(book_type="nonfiction", start=20, count=10)
+    db.hot_books(book_type="nonfiction", start=0, count=10)
     # db.search_book("马伯庸")
     # db.get_book(11534920)
     #db.weekly_hot_books(book_type='fiction', start=9)
