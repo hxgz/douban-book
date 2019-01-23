@@ -80,8 +80,8 @@ class DoubanTop250(API):
                          re.S)
             book['rate_sample'] = m.group(1)
 
-            book['suggest'] = book_soup.find(
-                name="span", attrs={"class": "inq"}).getText(strip=True)
+            suggest_soup = book_soup.find(name="span", attrs={"class": "inq"})
+            book['suggest'] = suggest_soup.getText(strip=True) if suggest_soup else ""
 
             book_list.append(book)
 
@@ -107,11 +107,12 @@ class DoubanMobileBase(API):
                 'title': item['title'],
                 'title2':'',
                 'img':item['cover']['url'],
-                'rate': item['rating']['value'],
-                'rate_sample':item['rating']['count'],
+                'rate': item['rating']['value'] if item['rating'] else 0,
+                'rate_sample':item['rating']['count'] if item['rating'] else 0,
                 'author_list': item['author'],
                 'press_list': item['press'],
                 'pubdate': item['year'][0],
+                'suggest': item['recommend_comment']
             }for item in data['subject_collection_items']]
         }
 
@@ -173,20 +174,27 @@ class DoubanBook(object):
         每页25本
         https://book.douban.com/top250?start=0
         '''
-        return await DoubanTop250().call(params={'start': start})
+
+        return {
+            "start": start,
+            "count": 25,
+            "total": 250,
+            "book_list": await DoubanTop250().call(params={'start': start})
+        }
 
     async def get_book(self, book_id):
         path_args = {"book_id": book_id}
         return await DoubanBookInfo().call(path_args=path_args)
 
 
-# import asyncio
-# db = DoubanBook()
-# asyncio.get_event_loop().run_until_complete(
-#     # db.top250()
-#     # db.get_book(1770782)
-#     # db.hot_books()
-#     # db.search_book("马伯庸")
-#     # db.get_book(11534920)
-#     #db.weekly_hot_books(book_type='fiction', start=9)
-# )
+import asyncio
+db = DoubanBook()
+asyncio.get_event_loop().run_until_complete(
+    # db.top250()
+    # db.get_book(1770782)
+    # db.hot_books()
+    db.hot_books(book_type="nonfiction", start=20, count=10)
+    # db.search_book("马伯庸")
+    # db.get_book(11534920)
+    #db.weekly_hot_books(book_type='fiction', start=9)
+)
