@@ -20,10 +20,16 @@ class DoubanAPIBase(API):
             'rate': item['rating']['average'],
             'rate_sample': item['rating']['numRaters'],
             'author_list': item['author'],
-            'press_list': [item['publisher']],
+            'publish_list': [item['publisher']],
             'pubdate': item['pubdate'],
             'tag_list': [t['title'] for t in item['tags']],
-            "desc": item['summary'],
+            'translator_list': item['translator'],
+            'page': item['pages'] or '',
+            "summary": item['summary'],
+            "author_summary": item['author_intro'],
+            'binding': item['binding'],
+            'price': item['price'],
+            'catalog_list': item['catalog'].split('\t')
         }
 
 
@@ -68,7 +74,7 @@ class DoubanTop250(API):
             info = book_soup.find(name="p", attrs={"class": "pl"}).getText(strip=True).split(' / ')
 
             book['author_list'] = info[0:-3]
-            book['press_list'] = info[-3].split(' ')
+            book['publish_list'] = info[-3].split(' ')
             book['pubdate'] = info[-2]
             book['price'] = info[-1]
 
@@ -110,7 +116,7 @@ class DoubanMobileBase(API):
                 'rate': item['rating']['value'] if item['rating'] else 0,
                 'rate_sample':item['rating']['count'] if item['rating'] else 0,
                 'author_list': item['author'],
-                'press_list': item['press'],
+                'publish_list': item['press'],
                 'pubdate': item['year'][0],
                 'suggest': item.get('recommend_comment', '')
             }for item in data['subject_collection_items']]
@@ -187,14 +193,14 @@ class DoubanBook(object):
         return await DoubanBookInfo().call(path_args=path_args)
 
 
-import asyncio
-db = DoubanBook()
-asyncio.get_event_loop().run_until_complete(
-    # db.top250()
-    # db.get_book(1770782)
-    # db.hot_books()
-    db.hot_books(book_type="nonfiction", start=0, count=10)
-    # db.search_book("马伯庸")
-    # db.get_book(11534920)
-    #db.weekly_hot_books(book_type='fiction', start=9)
-)
+#import asyncio
+#db = DoubanBook()
+#asyncio.get_event_loop().run_until_complete(
+#    # db.top250()
+#    # db.get_book(1770782)
+#    # db.hot_books()
+#    db.hot_books(book_type="nonfiction", start=0, count=10)
+#    # db.search_book("马伯庸")
+#    # db.get_book(11534920)
+#    #db.weekly_hot_books(book_type='fiction', start=9)
+#)
